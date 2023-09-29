@@ -16,6 +16,9 @@ streamlit = "^1.26.0"
 pandas = "^2.1.0"
 numpy = "^1.25.2"
 plotly = "^5.16.1"
+streamlit-authenticator = "^0.2.3"
+watchdog = "^3.0.0"
+streamlit-elements = "^0.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
