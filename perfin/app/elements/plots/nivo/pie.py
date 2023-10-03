@@ -44,10 +44,10 @@ class Pie(Dashboard.Item):
             },
         }
 
-    def __call__(self, json_data):
+    def __call__(self, json_data=[]):
         try:
             data = json.loads(json_data)
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, TypeError):
             data = self.DEFAULT_DATA
 
         with mui.Paper(
@@ -62,7 +62,7 @@ class Pie(Dashboard.Item):
         ):
             with self.title_bar():
                 mui.icon.PieChart()
-                mui.Typography("Pie chart", sx={"flex": 1})
+                mui.Typography("Expenses by top category", sx={"flex": 1})
 
             with mui.Box(sx={"flex": 1, "minHeight": 0}):
                 nivo.Pie(

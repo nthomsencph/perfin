@@ -1,19 +1,16 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-import yaml
-from yaml.loader import SafeLoader
 
+from db.crud import UserCRUD
 from perfin.app.models import User
-
-with open("perfin/app/auth/users.yaml") as file:
-    config = yaml.load(file, Loader=SafeLoader)
+from perfin.config import COOKIE, PRE_AUTHORIZED
 
 AUTH = stauth.Authenticate(
-    config["credentials"],
-    config["cookie"]["name"],
-    config["cookie"]["key"],
-    config["cookie"]["expiry_days"],
-    config["preauthorized"],
+    credentials=UserCRUD.retrive_users_for_auth(),
+    cookie_name=COOKIE["name"],
+    key=COOKIE["key"],
+    cookie_expiry_days=COOKIE["expiry_days"],
+    preauthorized=PRE_AUTHORIZED["emails"],
 )
 
 

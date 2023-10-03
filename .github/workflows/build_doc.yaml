@@ -2,7 +2,7 @@ name: Build and publish doc
 on:
   push:
     branches:
-      - main
+      # - main
       - test-doc
 permissions:
   contents: write

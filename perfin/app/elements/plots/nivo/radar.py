@@ -39,10 +39,10 @@ class Radar(Dashboard.Item):
             },
         }
 
-    def __call__(self, json_data):
+    def __call__(self, json_data=[]):
         try:
             data = json.loads(json_data)
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, TypeError):
             data = self.DEFAULT_DATA
 
         with mui.Paper(

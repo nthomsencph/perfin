@@ -1,6 +1,6 @@
 from streamlit_elements import mui
 
-from .dashboard import Dashboard
+from perfin.app.elements.dashboard import Dashboard
 
 
 class Card(Dashboard.Item):
@@ -10,7 +10,9 @@ class Card(Dashboard.Item):
         "if you like."
     )
 
-    def __call__(self, content):
+    def __call__(self, content=None):
+        content = content or self.DEFAULT_CONTENT
+
         with mui.Card(
             key=self._key,
             sx={

@@ -19,6 +19,10 @@ plotly = "^5.16.1"
 streamlit-authenticator = "^0.2.3"
 watchdog = "^3.0.0"
 streamlit-elements = "^0.1.0"
+pydantic = "<2c"
+sqlalchemy = "^2.0.21"
+langchain-experimental = "^0.0.24"
+openai = "^0.28.1"
 
 
 [tool.poetry.group.dev.dependencies]

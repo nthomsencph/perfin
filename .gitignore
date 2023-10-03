@@ -162,3 +162,5 @@ cython_debug/
 # Custom
 config.cfg
 db/*.csv
+**/*.db
+**/*.lock
