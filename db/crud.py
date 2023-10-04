@@ -1,5 +1,3 @@
-from contextlib import contextmanager
-
 from db.config import get_session
 from db.models.users import User
 

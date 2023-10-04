@@ -11,7 +11,7 @@ homepage = "pypi.org/project/perfin/"
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = "^0.103.1"
-langchain = "^0.0.286"
+langchain = "0.0.306"
 streamlit = "^1.26.0"
 pandas = "^2.1.0"
 numpy = "^1.25.2"

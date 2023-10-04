@@ -1,3 +1,5 @@
+from pathlib import Path
+
 _menu_items = {
     "Get Help": "https://www.github.com/nthomsencph/perfin",
     "Report a bug": "https://www.github.com/nthomsencph/perfin/issues",
@@ -16,7 +18,9 @@ ST_PAGE_CONFIG = {
     },
 }
 
-DB_URL = "sqlite:///db/perfin.db"
+_db_path = "db/perfin.db"
+DB_URL = f"sqlite:///{_db_path}"
+
 DB_ECHO = True
 
 COOKIE = {

@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain.callbacks import StreamlitCallbackHandler
 
-from perfin.agent import DB_CHAIN, PROMPT
+from perfin.agent import AGENT
 from perfin.app.auth import authenticate
 from perfin.app.ui.sidebar import init_sidebar
 
@@ -11,8 +11,6 @@ from perfin.app.ui.sidebar import init_sidebar
 def main():
     if user := authenticate():
         init_sidebar(user.name)
-
-        st_cb = StreamlitCallbackHandler(st.container())
 
         if "messages" not in st.session_state or st.sidebar.button(
             "Clear message history", use_container_width=True
@@ -29,15 +27,9 @@ def main():
             st.chat_message("user").write(user_query)
 
             with st.chat_message("assistant"):
-                prompt = PROMPT.format(
-                    query=user_query,
-                    user=user.username,
-                    table="transactions",
-                    table_columns=f'{["user_key", "date", "text", "category", "subcategory", "amount", "balance"]}',
-                    dialect="sqlite",
-                )
+                st_cb = StreamlitCallbackHandler(st.container())
 
-                response = DB_CHAIN.run(prompt, callbacks=[st_cb])
+                response = AGENT.run(user_query, callbacks=[st_cb])
 
                 st.session_state.messages.append(
                     {"role": "assistant", "content": response}
