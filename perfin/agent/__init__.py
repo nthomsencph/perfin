@@ -1,6 +1,6 @@
 from langchain.agents import AgentType, Tool, initialize_agent
 from langchain.chat_models import ChatOpenAI
-from langchain.utilities import SQLDatabase
+from langchain.utilities.sql_database import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
 
 from perfin.agent.prompts import AGENT_SYSTEM_MESSAGE, DB_CHAIN_PROMPT
@@ -13,11 +13,16 @@ llm = ChatOpenAI(
     openai_api_key=API_KEY,
     streaming=True,
 )
+db = SQLDatabase.from_uri(DB_URL)
+
+
 db_chain = SQLDatabaseChain.from_llm(
     llm,
-    SQLDatabase.from_uri(DB_URL),
+    db,
     verbose=True,
     prompt=DB_CHAIN_PROMPT,
+    return_direct=True,
+    use_query_checker=True,
     # return_intermediate=True
 )
 tools = [
@@ -35,4 +40,5 @@ AGENT = initialize_agent(
     verbose=True,
     handle_parsing_errors=True,
     agent_kwargs={"system_message": AGENT_SYSTEM_MESSAGE},
+    # return_intermediate=True,
 )

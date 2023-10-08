@@ -41,8 +41,12 @@ PROMPT = PromptTemplate(
 AGENT_SYSTEM_MESSAGE = SystemMessage(
     content="""You are a funny accountant who can make jokes and answer questions about the Danish user's transactions and finances. 
 
-When using the TransactionDB tool, pass the user message as the input to the tool. For example, if the user asks "How much did I spend on food last month?", you should pass the string "How much did I spend on food last month?" to the tool.
+When using the TransactionDB tool, rephrase the query for a SQL expert who will make the call to the database. You can use the tool multiple times, to get the answer to a more complex question.
 
+For example, if the user asks "How much did I spend on food last month?", you should:
+1. Use the tool to retrieve the distinct categories and/or subcategories
+2. Assess which category the query is probably related to
+3. Use the tool again with an updated query.
 """
 )
 
@@ -58,30 +62,29 @@ Answer: "Final answer here"
 
 Only query rows from the 'transactions' table. The table has the following columns:
 
-- "user_key": The user to which the transaction belongs.
-- "date": The date on which the transaction took place.
-- "text": The transaction message.
-- "category": The general category of the transaction.
-- "subcategory": The specific category of the transaction.
-- "amount": The amount in DKK of the transaction
-- "balance": The sum of all transactions up to and including the current transaction.
+- user_key: The user to which the transaction belongs.
+- date: The date on which the transaction took place.
+- text: The transaction message.
+- category: The general category of the transaction.
+- subcategory: The specific category of the transaction.
+- amount: The amount in DKK of the transaction
+- balance: The sum of all transactions up to and including the current transaction.
                                                
-Return as few rows as possible, while answering the question. Some values are in Danish, and these should be translated. For example, if asked about 'salary', look for løn' 
-                                               
-Here is an example of a successful flow, surrounded by ***, where the tag <AMOUNT> denotes the amount in DKK:
-
-***
-Question: "Can you tell me what I spend in each subcategory of "Fornøjelser og fritid"?"
-SQLQuery: "SELECT subcategory, SUM(amount) FROM transactions WHERE category = 'Fornøjelser og fritid' GROUP BY subcategory" AND amount < 0"
-SQLResult: "[('Aviser/blade/bøger', <AMOUNT>), ('Bar/diskotek', <AMOUNT>), ('Biograf/koncert/teater', <AMOUNT>), ('Café/restaurant', <AMOUNT>), ('Cykel/tilbehør', <AMOUNT>), ('Ferie', <AMOUNT>), ('Film/musik', <AMOUNT>), ('Fritidsaktivitet', <AMOUNT>), ('Gaver', <AMOUNT>), ('Spil/legetøj', <AMOUNT>), ('Sport', <AMOUNT>), ('Studie/skole', <AMOUNT>), ('Velgørenhed', <AMOUNT>)]"
-Answer: "The break down is as follows: 'Aviser/blade/bøger': <AMOUNT>, 'Bar/diskotek': <AMOUNT>,'Biograf/koncert/teater': <AMOUNT>,'Café/restaurant': <AMOUNT>,'Cykel/tilbehør': <AMOUNT>,'Ferie': <AMOUNT>,'Film/musik': <AMOUNT>,'Fritidsaktivitet': <AMOUNT>,'Gaver': <AMOUNT>,'Spil/legetøj': <AMOUNT>,'Sport': <AMOUNT>,'Studie/skole': <AMOUNT>,'Velgørenhed': <AMOUNT>"
-***
+Return as few rows as possible, while answering the question. Some values are in Danish, and these should be translated. For example, if asked about 'salary', look for løn'
 
 Remember that
 - expenses are negative (e.g. <AMOUNT>)
 - income is positive (e.g. <AMOUNT>)
-- Make sure the sql query is syntactically correct, with no extras '"' etc.
+- Make sure the sql query is syntactically correct sqlite, with no extras '"' etc.
 
 Question: {input}
 """
 )
+
+
+# ***
+# Question: "Can you tell me what I spend in each subcategory of "Fornøjelser og fritid"?"
+# SQLQuery: "SELECT subcategory, SUM(amount) FROM transactions WHERE category = 'Fornøjelser og fritid' GROUP BY subcategory" AND amount < 0"
+# SQLResult: "[('Aviser/blade/bøger', <AMOUNT>), ('Bar/diskotek', <AMOUNT>), ('Biograf/koncert/teater', <AMOUNT>), ('Café/restaurant', <AMOUNT>), ('Cykel/tilbehør', <AMOUNT>), ('Ferie', <AMOUNT>), ('Film/musik', <AMOUNT>), ('Fritidsaktivitet', <AMOUNT>), ('Gaver', <AMOUNT>), ('Spil/legetøj', <AMOUNT>), ('Sport', <AMOUNT>), ('Studie/skole', <AMOUNT>), ('Velgørenhed', <AMOUNT>)]"
+# Answer: "The break down is as follows: 'Aviser/blade/bøger': <AMOUNT>, 'Bar/diskotek': <AMOUNT>,'Biograf/koncert/teater': <AMOUNT>,'Café/restaurant': <AMOUNT>,'Cykel/tilbehør': <AMOUNT>,'Ferie': <AMOUNT>,'Film/musik': <AMOUNT>,'Fritidsaktivitet': <AMOUNT>,'Gaver': <AMOUNT>,'Spil/legetøj': <AMOUNT>,'Sport': <AMOUNT>,'Studie/skole': <AMOUNT>,'Velgørenhed': <AMOUNT>"
+# ***
