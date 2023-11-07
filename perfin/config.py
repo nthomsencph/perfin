@@ -1,4 +1,4 @@
-from pathlib import Path
+from configparser import ConfigParser
 
 _menu_items = {
     "Get Help": "https://www.github.com/nthomsencph/perfin",
@@ -19,6 +19,7 @@ ST_PAGE_CONFIG = {
 }
 
 _db_path = "db/perfin.db"
+
 DB_URL = f"sqlite:///{_db_path}"
 
 DB_ECHO = True
@@ -31,9 +32,8 @@ COOKIE = {
 
 PRE_AUTHORIZED = {"emails": []}
 
-from configparser import ConfigParser
-
 config = ConfigParser()
 config.read("config.cfg")
 
-API_KEY = config["LANGCHAIN"]["API_KEY"]
+API_KEY = config["OPENAI"]["API_KEY"]
+FW_API_URL = config["FLOWISE"]["FW_API_URL"]

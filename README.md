@@ -1,17 +1,21 @@
 # perfin
-A GenAI-enabled personal finance dashboard in Streamlit
+A GenAI-enabled personal finance dashboard in Streamlit. 
+This solution uses flowise.ai as an LLM orchestration tool.
 
 ## Getting Started
 Install with pip
 ```
 pip install perfin
 ```
-For development, clone the repo and install with pip
+For development, clone the repo and install
 ```
 git clone
 cd perfin
-pip install -e .
+poetry install --with dev
+poetry run pre-commit install
+
 ```
+Add config.cfg (from example-config.cfg) to the root directory of the project
 
 
 ### Prerequisites
@@ -23,10 +27,6 @@ pip install -e .
 ## Deployment
 
 ## Built With
-
-* [fastapi](https://fastapi.tiangolo.com/) - The api framework used
-* [streamlit](https://streamlit.io/) - The web app framework used
-* [langchain](https://python.langchain.com/docs/get_started/introduction) - The GenAI framework used
 
 
 ## Contributing

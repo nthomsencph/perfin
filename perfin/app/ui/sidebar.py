@@ -8,6 +8,7 @@ def init_sidebar(name: str) -> None:
     from perfin.app.auth.login import AUTH  # noqa: F811
 
     st.sidebar.title(":blue[Perfin]")
+    st.sidebar.image("./assets/perfin-logo.png")
     st.sidebar.divider()
     st.sidebar.write(f"Welcome, {name}")
     AUTH.logout("Logout", "sidebar")  # Logout button
